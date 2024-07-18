@@ -155,5 +155,23 @@ const gameController = (function(){
 })();
 
 const screenController = (function(){
-  
+  const playerTurnDiv = document.querySelector(".turn");
+  const boardDiv = document.querySelector(".board");
+
+  updateScreen = () => {
+    boardDiv.textContent = "";
+    
+    const board = gameBoard.getBoard();
+    const avtivePlayer = player.getActivePlayer();
+
+    playerTurnDiv.textContent = `${activePlayer}'s turn...`
+
+    board.forEach((row) => {
+      row.forEach((cell) => {
+        
+      })
+    })
+  }
+
+
 })();
