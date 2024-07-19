@@ -1,0 +1,48 @@
+
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+.header-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.score-main-container{
+    display: flex;
+    gap: 20px;
+    align-self: center;
+    margin-right: 20px;
+}
+
+.board{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    background-color: rgb(170, 170, 152);
+    height: 70vh;
+}
+
+.cell{
+    border: solid 1px black;
+    background-color: navajowhite;
+    font-size: 50px;
+}
+
+.refreshBut-container{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+}
+
+.refreshBut {
+    background-color: aliceblue;
+    color: black;
+    border: 0.2px solid black;
+}
+
+.refreshBut:hover{
+    background-color: black;
+    color: white;
+}

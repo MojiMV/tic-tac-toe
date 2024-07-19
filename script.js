@@ -1,15 +1,21 @@
 const gameBoard = (function(){
     const rows = 3;
     const columns = 3;
-    const board = [];
+    let board = [];
 
     // common way to make a 2d array
-    for (let i = 0; i < rows; i++) {
-        board[i] = [];
-        for (let j = 0; j < columns; j++) {
-          board[i].push(Cell());
+    
+    const initilizeBoard = () => {
+        board = [];
+        for (let i = 0; i < rows; i++) {
+          board[i] = [];
+          for (let j = 0; j < columns; j++) {
+            board[i].push(Cell());
+          }
         }
       }
+
+    initilizeBoard();
 
     const getBoard = () => board;
 
@@ -21,6 +27,10 @@ const gameBoard = (function(){
         board[row][column].addToken(player);
         return true
     } 
+
+    const resetBoard = () =>{
+      initilizeBoard();
+    }
 
     const printBoard = () => {
         const boardWithCellValues = board.map((row) => row.map((cell) => cell.getValue()))
@@ -45,7 +55,8 @@ const gameBoard = (function(){
     return{
         getBoard,
         addToken,
-        printBoard
+        printBoard,
+        resetBoard
     }
 })();
 
@@ -54,11 +65,13 @@ const player = (function(playerOneName = "Player One", playerTwoName = "Player T
     const players = [
         {
             name: playerOneName,
-            token: "x"
+            token: "x",
+            score: 0
         },
         {
             name: playerTwoName,
-            token: "o"
+            token: "o",
+            score: 0
         }
     ];
 
@@ -70,12 +83,15 @@ const player = (function(playerOneName = "Player One", playerTwoName = "Player T
     
     return{
         switchPlayer,
-        getActivePlayer
+        getActivePlayer,
+        players
     }
 
 })();
 
 const gameController = (function(){
+    let winner;
+
     const printNewRound = () => {
       gameBoard.printBoard();
       console.log(`${player.getActivePlayer().name}'s turn...`)
@@ -134,9 +150,10 @@ const gameController = (function(){
       }
 
       if(checkWin(gameBoard.getBoard(), player.getActivePlayer().token)){
-        alert(`${player.getActivePlayer().name} won this round!`);
+          player.getActivePlayer().score += 1;
+          gameBoard.resetBoard();
         } else if (isFull(gameBoard.getBoard())){
-          alert("Its a draw!");
+          gameBoard.resetBoard();
         } else {
         console.log("no winner yet.");
         }
@@ -146,6 +163,7 @@ const gameController = (function(){
       printNewRound();
       
     }
+
     printNewRound();
 
     return{
@@ -157,14 +175,22 @@ const gameController = (function(){
 const screenController = (function(){
   const playerTurnDiv = document.querySelector(".turn");
   const boardDiv = document.querySelector(".board");
+  const playerOneNameDiv = document.querySelector(".player-one-name");
+  const playerOneScoreDiv = document.querySelector(".player-one-score");
+  const playerTwoNameDiv = document.querySelector(".player-two-name");
+  const playerTwoScoreDiv = document.querySelector(".player-two-score");
+  const refreshBut = document.querySelector(".refreshBut");
 
   updateScreen = () => {
     boardDiv.textContent = "";
-    
     const board = gameBoard.getBoard();
     const activePlayer = player.getActivePlayer();
 
-    playerTurnDiv.textContent = `${activePlayer}'s turn...`
+    playerTurnDiv.textContent = `${activePlayer.name}'s turn...`
+    playerOneNameDiv.textContent = player.players[0].name;
+    playerOneScoreDiv.textContent = player.players[0].score;
+    playerTwoNameDiv.textContent = player.players[1].name;
+    playerTwoScoreDiv.textContent = player.players[1].score;
 
     board.forEach((row ,rowIndex) => {
       row.forEach((cell, colIndex) => {
@@ -180,6 +206,7 @@ const screenController = (function(){
   }
 
   function eventHandler(e){
+
     const selectedColumn = e.target.dataset.column;
     const selectedRow = e.target.dataset.row;
     if ( selectedColumn == undefined || selectedRow == undefined) return;
@@ -188,7 +215,11 @@ const screenController = (function(){
     updateScreen();
   }
 
-  boardDiv.addEventListener("click", eventHandler)
+  boardDiv.addEventListener("click", eventHandler);
   updateScreen();
+
+  refreshBut.addEventListener("click", () =>{
+    window.location.reload();
+  })
 
 })();
