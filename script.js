@@ -162,16 +162,33 @@ const screenController = (function(){
     boardDiv.textContent = "";
     
     const board = gameBoard.getBoard();
-    const avtivePlayer = player.getActivePlayer();
+    const activePlayer = player.getActivePlayer();
 
     playerTurnDiv.textContent = `${activePlayer}'s turn...`
 
-    board.forEach((row) => {
-      row.forEach((cell) => {
-        
+    board.forEach((row ,rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        const cellBut = document.createElement("button");
+        cellBut.classList.add("cell");
+        cellBut.dataset.column = colIndex;
+        cellBut.dataset.row = rowIndex;
+        cellBut.textContent = cell.getValue();
+
+        boardDiv.appendChild(cellBut);
       })
     })
   }
 
+  function eventHandler(e){
+    const selectedColumn = e.target.dataset.column;
+    const selectedRow = e.target.dataset.row;
+    if ( selectedColumn == undefined || selectedRow == undefined) return;
+
+    gameController.playRound(selectedRow, selectedColumn);
+    updateScreen();
+  }
+
+  boardDiv.addEventListener("click", eventHandler)
+  updateScreen();
 
 })();
