@@ -4,6 +4,40 @@ body{
     flex-direction: column;
 }
 
+#player-form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-container{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input{
+    width: 300px;
+}
+
+form > button {
+    background-color: aliceblue;
+    color: black;
+    border: 0.2px solid black;
+}
+
+form > button:hover {
+    background-color: black;
+    color: white;
+}
+
+.game-container{
+    display: flex;
+    flex-direction: column;
+}
+
 .header-container{
     display: flex;
     justify-content: space-between;
@@ -46,3 +80,4 @@ body{
     background-color: black;
     color: white;
 }
+

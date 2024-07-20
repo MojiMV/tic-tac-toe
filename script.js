@@ -60,9 +60,12 @@ const gameBoard = (function(){
     }
 })();
 
-const player = (function(playerOneName = "Player One", playerTwoName = "Player Two") {
+const player = (function() {
 
-    const players = [
+    let players;
+  
+    const initPlayers = (playerOneName ="Player One", playerTwoName="Player Two") => {
+      players = [
         {
             name: playerOneName,
             token: "x",
@@ -74,6 +77,7 @@ const player = (function(playerOneName = "Player One", playerTwoName = "Player T
             score: 0
         }
     ];
+    }
 
     let activePlayer = players[0];
 
@@ -84,7 +88,8 @@ const player = (function(playerOneName = "Player One", playerTwoName = "Player T
     return{
         switchPlayer,
         getActivePlayer,
-        players
+        players,
+        initPlayers
     }
 
 })();
@@ -180,6 +185,10 @@ const screenController = (function(){
   const playerTwoNameDiv = document.querySelector(".player-two-name");
   const playerTwoScoreDiv = document.querySelector(".player-two-score");
   const refreshBut = document.querySelector(".refreshBut");
+  const formContainer = document.querySelector(".form-container");
+  const playerForm = document.querySelector("#player-form");
+  const gameContainer = document.querySelector(".game-container");
+  const formSubmitBut = document.querySelector("#submitBut");
 
   updateScreen = () => {
     boardDiv.textContent = "";
@@ -214,6 +223,20 @@ const screenController = (function(){
     gameController.playRound(selectedRow, selectedColumn);
     updateScreen();
   }
+
+
+  formSubmitBut.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    const playerOneName = document.querySelector("#playerOneName").value;
+    const playerTwoName = document.querySelector("#playerTwoName").value;
+
+    player.initPlayers(playerOneName, playerTwoName);
+
+    playerForm.style.display = "none";
+    gameContainer.style.display = "block";
+    updateScreen();
+  })
 
   boardDiv.addEventListener("click", eventHandler);
   updateScreen();
