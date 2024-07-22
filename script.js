@@ -62,21 +62,22 @@ const gameBoard = (function(){
 
 const player = (function() {
 
-    let players;
+    let players = [
+      {
+          name: "Player One",
+          token: "x",
+          score: 0
+      },
+      {
+          name: "Player Two",
+          token: "o",
+          score: 0
+      }
+  ];
   
     const initPlayers = (playerOneName ="Player One", playerTwoName="Player Two") => {
-      players = [
-        {
-            name: playerOneName,
-            token: "x",
-            score: 0
-        },
-        {
-            name: playerTwoName,
-            token: "o",
-            score: 0
-        }
-    ];
+      players[0].name = playerOneName;
+      players[1].name = playerTwoName;
     }
 
     let activePlayer = players[0];
@@ -185,7 +186,7 @@ const screenController = (function(){
   const playerTwoNameDiv = document.querySelector(".player-two-name");
   const playerTwoScoreDiv = document.querySelector(".player-two-score");
   const refreshBut = document.querySelector(".refreshBut");
-  const formContainer = document.querySelector(".form-container");
+  const dialog = document.querySelector(".form-container");
   const playerForm = document.querySelector("#player-form");
   const gameContainer = document.querySelector(".game-container");
   const formSubmitBut = document.querySelector("#submitBut");
@@ -225,7 +226,16 @@ const screenController = (function(){
   }
 
 
-  formSubmitBut.addEventListener("submit", (event) => {
+  
+
+  boardDiv.addEventListener("click", eventHandler);
+
+  refreshBut.addEventListener("click", () =>{
+    window.location.reload();
+  })
+
+  playerForm.addEventListener("submit", (event) => {
+    console.log("clicked.");
     event.preventDefault();
 
     const playerOneName = document.querySelector("#playerOneName").value;
@@ -233,16 +243,11 @@ const screenController = (function(){
 
     player.initPlayers(playerOneName, playerTwoName);
 
-    playerForm.style.display = "none";
-    gameContainer.style.display = "block";
     updateScreen();
+
+    dialog.style.display = "none";
+    gameContainer.style.display = "block";
   })
-
-  boardDiv.addEventListener("click", eventHandler);
-  updateScreen();
-
-  refreshBut.addEventListener("click", () =>{
-    window.location.reload();
-  })
-
+  
 })();
+
